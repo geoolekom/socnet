@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Menu, Segment } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 import { Link, Route } from 'react-router-dom';
 
 import Feed from '../components/Feed/Feed';
@@ -10,38 +10,35 @@ import Friends from '../components/Friends/Friends';
 
 class App extends React.Component {
 
-    changeActiveMenuItem = (event, item) => {
-        this.props.changeNavKey(item.name);
-    };
-
     render = () => <div>
         <Menu pointing secondary>
-            <Menu.Item name="profile" active={ this.props.navKey === "profile" } onClick={ this.changeActiveMenuItem }>
-                <Link to={ "/profile" } >Profile</Link>
+            <Menu.Item name="profile" active={ this.props.location.pathname === '/profile' }>
+                <Link to="/profile">Profile</Link>
             </Menu.Item>
 
-            <Menu.Item name="feed" active={ this.props.navKey === "feed" } onClick={ this.changeActiveMenuItem }>
-                <Link to={ "/feed" } >Feed</Link>
+            <Menu.Item name="feed" active={ this.props.location.pathname === '/feed' }>
+                <Link to="/feed">Feed</Link>
             </Menu.Item>
 
-            <Menu.Item name="friends" active={ this.props.navKey === "friends" } onClick={ this.changeActiveMenuItem }>
-                <Link to={ "/friends" } >Friends</Link>
+            <Menu.Item name="friends" active={ this.props.location.pathname === '/friends' }>
+                <Link to="/friends">Friends</Link>
             </Menu.Item>
 
-            <Menu.Item name="messages" active={ this.props.navKey === "messages" } onClick={ this.changeActiveMenuItem }>
-                <Link to={ "/messages" } >Messages</Link>
+            <Menu.Item name="messages" active={ this.props.location.pathname === '/messages' }>
+                <Link to="/messages">Messages</Link>
             </Menu.Item>
 
             <Menu.Menu position="right">
-                <Menu.Item name="logout" active={ this.props.navKey === "logout" } onClick={ this.changeActiveMenuItem } />
+                <Menu.Item name="logout" />
             </Menu.Menu>
         </Menu>
 
         <div>
-            <Route exact={ this.props.navKey === "profile" } path="/profile" component={ () => <div>profile</div> } />
-            <Route exact={ this.props.navKey === "feed" } path="/feed" component={ Feed }  />
-            <Route exact={ this.props.navKey === "friends" } path="/friends" component={ Friends } />
-            <Route exact={ this.props.navKey === "messages" } path="/messages" component={ () => <div>messages</div> } />
+            <Route exact path="/" render={ () => <div>Main</div> }/>
+            <Route path="/profile" render={ () => <div>profile</div> } />
+            <Route path="/feed" component={ Feed } />
+            <Route path="/friends" component={ Friends } />
+            <Route path="/messages" render={ () => <div>messages</div> } />
         </div>
     </div>
 }
@@ -49,13 +46,11 @@ class App extends React.Component {
 App.propTypes = {};
 
 const mapStateToProps = state => ({
-    navKey: state.display.navKey,
+    location: state.router.location,
 });
 
-import { changeNavKey } from '../actions/display';
-
 const mapDispatchToProps = dispatch => (
-    bindActionCreators({ changeNavKey }, dispatch)
+    bindActionCreators({}, dispatch)
 );
 
 export default connect(

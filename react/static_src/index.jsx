@@ -5,19 +5,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom'
-import { syncHistoryWithStore } from 'react-router-redux';
+import { ConnectedRouter } from 'react-router-redux';
 
-import initStore from "./containers/Store"
-import App from "./containers/App"
+import initStore from "./containers/Store";
+import App from "./containers/App";
 
 const store = initStore();
+import { history } from 'containers/Store';
 
 ReactDOM.render(
     <Provider store={ store }>
-        <BrowserRouter>
+        <ConnectedRouter history={ history }>
             <App/>
-        </BrowserRouter>
+        </ConnectedRouter>
     </Provider>,
     document.getElementById('root')
 );
