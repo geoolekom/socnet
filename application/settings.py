@@ -18,6 +18,7 @@ from kombu import Queue
 # BASE SETTINGS
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_NAME = os.path.basename(os.path.dirname(BASE_DIR))
+VERSION = '1.0.0'
 
 SITE_URL = 'http://socnet.local'
 ADMINS = (
@@ -68,7 +69,8 @@ PROJECT_APPS = [
     'likes.apps.LikesConfig',
     'chats.apps.ChatsConfig',
     'relations.apps.RelationsConfig',
-    'mailing.apps.MailingConfig'
+    'mailing.apps.MailingConfig',
+    'react'
 ]
 
 INSTALLED_APPS = [
@@ -116,6 +118,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.processors.static'
             ],
         },
     },
@@ -192,4 +195,4 @@ TEST_RUNNER = 'djcelery.contrib.test_runner.CeleryTestSuiteRunner'
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/geoolekom/track/web/socnet/collected_static/'
+STATIC_ROOT = '/home/geoolekom/code/socnet/collected_static/'
