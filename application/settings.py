@@ -11,24 +11,65 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from configparser import ConfigParser
+import djcelery
+from kombu import Queue
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# BASE SETTINGS
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_NAME = os.path.basename(os.path.dirname(BASE_DIR))
 
+SITE_URL = 'http://socnet.local'
+ADMINS = (
+    ('Egor', 'geoolekom@gmail.com'),
+)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
+# CONFIG
+config = ConfigParser()
+config.read(os.path.join(BASE_DIR, '../{0}.conf'.format(PROJECT_NAME)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_i*61pmy803nqyql0a60eecw^i)#96s^@5+wxa(n!c0)sk5ofm'
+SECRET_KEY = config.get('security', 'SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = config.get('debug', 'DEBUG')
+INTERNAL_IPS = []
+DEBUG_APPS = []
 ALLOWED_HOSTS = []
 
+if DEBUG:
+    INTERNAL_IPS = ['127.0.0.1', ]
+    DEBUG_APPS = ['debug_toolbar', ]
+    DEV_HOSTS = ['socnet.local', 'localhost', ]
+
+
+# REST API
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
 
 # Application definition
+AUTH_USER_MODEL = 'accounts.User'
+
+PROJECT_APPS = [
+    'social_django',
+    'rest_framework',
+    'djcelery',
+    'core.apps.CoreConfig',
+    'accounts.apps.AccountsConfig',
+    'posts.apps.PostsConfig',
+    'comments.apps.CommentsConfig',
+    'likes.apps.LikesConfig',
+    'chats.apps.ChatsConfig',
+    'relations.apps.RelationsConfig',
+    'mailing.apps.MailingConfig'
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,6 +80,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+INSTALLED_APPS += DEBUG_APPS
+INSTALLED_APPS += PROJECT_APPS
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = config.get('oauth', 'VK_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = config.get('oauth', 'VK_SECRET')
+SOCIAL_AUTH_VK_SCOPE = ['email', 'password']
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -47,6 +100,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'application.urls'
@@ -67,23 +121,22 @@ TEMPLATES = [
     },
 ]
 
+# WSGI
 WSGI_APPLICATION = 'application.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
+# DATABASES
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config.get('db', 'NAME'),
+        'USER': config.get('db', 'USER'),
+        'PASSWORD': config.get('db', 'PASSWORD'),
+        'HOST': config.get('db', 'HOST'),
+        'PORT': config.get('db', 'PORT'),
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
-
+# PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -99,22 +152,44 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
-
+# I18N
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
+# MAILING
+EMAIL_HOST = config.get('mailing', 'HOST')
+EMAIL_PORT = config.get('mailing', 'PORT')
+SENDER_EMAIL = config.get('mailing', 'SENDER')
+SERVER_EMAIL = config.get('mailing', 'SERVER')
+UNSUBSCRIBE_TOKEN = config.get('security', 'UNSUBSCRIBE_TOKEN')
+
+# CELERY
+djcelery.setup_loader()
+
+BROKER_URL = 'redis://localhost:6379/0'
+
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_TASK_RESULT_EXPIRES = 7 * 86400
+
+CELERY_SEND_EVENTS = True
+CELERY_SEND_TASK_ERROR_EMAILS = True
+
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+CELERY_ALWAYS_EAGER = False
+CELERY_TIMEZONE = 'Europe/Moscow'
+
+CELERY_DEFAULT_QUEUE = 'default'
+
+CELERY_QUEUES = (
+    Queue('default', routing_key='task.#'),
+)
+
+TEST_RUNNER = 'djcelery.contrib.test_runner.CeleryTestSuiteRunner'
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/geoolekom/track/web/socnet/collected_static/'
