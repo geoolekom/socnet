@@ -5,6 +5,7 @@ import { Menu, Segment } from 'semantic-ui-react';
 import { Link, Route } from 'react-router-dom';
 
 import Feed from '../components/Feed/Feed';
+import Friends from '../components/Friends/Friends';
 
 
 class App extends React.Component {
@@ -39,7 +40,7 @@ class App extends React.Component {
         <div>
             <Route exact={ this.props.navKey === "profile" } path="/profile" component={ () => <div>profile</div> } />
             <Route exact={ this.props.navKey === "feed" } path="/feed" component={ Feed }  />
-            <Route exact={ this.props.navKey === "friends" } path="/friends" component={ () => <div>friends</div> } />
+            <Route exact={ this.props.navKey === "friends" } path="/friends" component={ Friends } />
             <Route exact={ this.props.navKey === "messages" } path="/messages" component={ () => <div>messages</div> } />
         </div>
     </div>

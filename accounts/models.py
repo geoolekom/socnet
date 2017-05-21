@@ -9,3 +9,5 @@ class User(AbstractUser, Dated):
         verbose_name_plural = 'Пользователи'
 
     is_active = models.BooleanField('Активирован?', default=False)
+    description = models.TextField('О себе', null=True, blank=True)
+

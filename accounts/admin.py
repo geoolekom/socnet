@@ -8,7 +8,7 @@ from chats.admin import ChatsInline, Chat
 class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
-            'fields': ('username', 'email', 'password1', 'password2'),
+            'fields': ('username', 'email', 'password1', 'password2', 'description', ),
         }),
     )
     inlines = ChatsInline,

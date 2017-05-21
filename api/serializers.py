@@ -11,13 +11,13 @@ from posts.models import Post
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', )
+        fields = ('id', 'username', 'first_name', 'last_name', 'description', )
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'password', )
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'password', 'description', )
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -60,7 +60,7 @@ class LikeSerializer(serializers.ModelSerializer):
 class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friendship
-        fields = ('id', 'person', 'friend', )
+        fields = ('id', 'person', 'friend', 'created')
 
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):

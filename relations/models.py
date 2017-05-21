@@ -17,7 +17,7 @@ class FriendshipRequest(Authored, Dated):
         return '{0} хочет подружиться с {1}'.format(self.author, self.target)
 
 
-class Friendship(models.Model):
+class Friendship(Dated):
     person = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name='Пользователь',
