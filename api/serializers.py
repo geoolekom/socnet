@@ -11,25 +11,25 @@ from posts.models import Post
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name',)
+        fields = ('id', 'username', 'first_name', 'last_name', )
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'password',)
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'password', )
 
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('id', 'author', 'chat', 'pub_time', 'upd_time', 'content',)
+        fields = ('id', 'author', 'chat', 'pub_time', 'upd_time', 'content', 'created', )
 
 
 class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
-        fields = ('id', 'author', 'title', 'participants',)
+        fields = ('id', 'author', 'title', 'participants', )
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -38,30 +38,32 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'author', 'title', 'content', 'like_count',)
+        fields = ('id', 'author', 'title', 'content', 'like_count', 'created', )
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.id')
+    post = serializers.ReadOnlyField(source='post.id')
     like_count = serializers.ReadOnlyField(source='likes.count')
 
     class Meta:
         model = Comment
-        fields = ('id', 'author', 'content', 'like_count', 'target_content_type', 'target_id',)
+        fields = ('id', 'author', 'post', 'content', 'like_count', 'created', )
 
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = ('id', 'author', 'target_content_type', 'target_id',)
+        fields = ('id', 'author', 'target_content_type', 'target_id', )
 
 
 class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friendship
-        fields = ('id', 'person', 'friend',)
+        fields = ('id', 'person', 'friend', )
 
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = FriendshipRequest
-        fields = ('id', 'author', 'target', 'accepted')
+        fields = ('id', 'author', 'target', 'accepted', )

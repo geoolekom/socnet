@@ -18,7 +18,7 @@ from kombu import Queue
 # BASE SETTINGS
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_NAME = os.path.basename(os.path.dirname(BASE_DIR))
-VERSION = '1.1.0'
+VERSION = '1.2.0'
 
 SITE_URL = 'http://socnet.local'
 ADMINS = (
@@ -52,7 +52,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+    'DATETIME_FORMAT': '%d.%m.%Y, %H:%M:%S'
 }
 
 # Application definition
@@ -196,3 +197,6 @@ TEST_RUNNER = 'djcelery.contrib.test_runner.CeleryTestSuiteRunner'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/geoolekom/code/socnet/collected_static/'
+
+# DATE AND TIME
+DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'

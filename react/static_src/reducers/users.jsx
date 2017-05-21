@@ -1,4 +1,5 @@
-import {USER_CREATED} from "../actions/users"
+import { USER_CREATED, USERS_GET, USERS_SUCCESS, USERS_FAILURE } from "../actions/users";
+import update from 'react-addons-update';
 
 const defaultState = {
     ids: [],
@@ -9,13 +10,29 @@ const defaultState = {
 
 export default (users = defaultState, action) => {
     switch (action.type) {
-        case USER_CREATED:
-            return {
-                ids: [...users.ids, action.user.id],
-                data: {...users.data, [action.user.id]: action.user},
-                isLoading: users.isLoading,
-                errors: users.errors,
-            };
+        case USERS_GET:
+            return update(
+                users,
+                { isLoading: { $set: true } }
+            );
+        case USERS_SUCCESS:
+            return update(
+                users,
+                {
+                    isLoading: { $set: false },
+                    ids: { $set: action.payload.map(user => user.id) },
+                    data: { $merge: action.payload.reduce((dict, user) => {dict[user.id] = user; return dict; }, {}) }
+                }
+            );
+        case USERS_FAILURE:
+            return update(
+                users,
+                {
+                    isLoading: { $set: false },
+                    errors: { $set: action.payload },
+                }
+
+            );
         default:
             return users;
     }

@@ -13,12 +13,3 @@ export const getPosts = () => ({
         types: [POSTS_GET, POSTS_SUCCESS, POSTS_FAILURE]
     }
 });
-
-export const getPostsSuccess = (posts) => ({
-    type: POSTS_SUCCESS,
-    posts: posts
-});
-
-export const getPostsFailure = () => ({
-    type: POSTS_FAILURE
-});

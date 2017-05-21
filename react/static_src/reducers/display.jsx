@@ -1,7 +1,7 @@
 import { NAV_KEY } from '../actions/display';
 
 const defaultState = {
-    navKey: 'profile',
+    navKey: window.location.pathname.substr(1),
     unreadCount: 0,
 };
 

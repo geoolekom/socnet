@@ -36,12 +36,12 @@ class App extends React.Component {
             </Menu.Menu>
         </Menu>
 
-        <Segment>
-            <Route exact path="/profile" component={ () => <div>profile</div> } />
-            <Route path="/feed"  component={ Feed }  />
-            <Route path="/friends"  component={ () => <div>friends</div> } />
-            <Route path="/messages"  component={ () => <div>messages</div> } />
-        </Segment>
+        <div>
+            <Route exact={ this.props.navKey === "profile" } path="/profile" component={ () => <div>profile</div> } />
+            <Route exact={ this.props.navKey === "feed" } path="/feed" component={ Feed }  />
+            <Route exact={ this.props.navKey === "friends" } path="/friends" component={ () => <div>friends</div> } />
+            <Route exact={ this.props.navKey === "messages" } path="/messages" component={ () => <div>messages</div> } />
+        </div>
     </div>
 }
 

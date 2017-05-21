@@ -28,8 +28,8 @@ class Consumed(models.Model):
 
 
 class Dated(models.Model):
-    pub_time = models.DateTimeField(verbose_name='Время публикации', auto_now_add=True)
-    upd_time = models.DateTimeField(verbose_name='Последнее изменение', auto_now=True)
+    created = models.DateTimeField(verbose_name='Время публикации', auto_now_add=True)
+    updated = models.DateTimeField(verbose_name='Последнее изменение', auto_now=True)
 
     class Meta:
         abstract = True

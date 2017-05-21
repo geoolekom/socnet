@@ -1,4 +1,5 @@
-import { POST_CREATED, POST_DELETE, POSTS_GET, POSTS_SUCCESS, POSTS_FAILURE } from "../actions/posts"
+import { POST_CREATED, POST_DELETE, POSTS_GET, POSTS_SUCCESS, POSTS_FAILURE } from "../actions/posts";
+import update from 'react-addons-update';
 
 const defaultState = {
     ids: [],
@@ -9,36 +10,29 @@ const defaultState = {
 
 export default (posts = defaultState, action) => {
     switch (action.type) {
-        case POST_CREATED:
-            return {
-                ids: [...posts.ids, action.post.id],
-                data: {...posts.data, [action.post.id]: action.post},
-                isLoading: posts.isLoading,
-                errors: posts.errors
-            };
-        case POST_DELETE:
-            return posts;
         case POSTS_GET:
-            return {
-                ids: posts.ids,
-                data: posts.data,
-                isLoading: true,
-                errors: posts.errors
-            };
+            return update(
+                posts,
+                { isLoading: { $set: true } }
+            );
         case POSTS_SUCCESS:
-            return {
-                ids: [...posts.ids, ...action.payload.map(post => post.id)],
-                data: {...posts.data, ...action.payload.reduce((dict, post) => {dict[post.id] = post; return dict; }, {}) },
-                isLoading: false,
-                errors: posts.errors
-            };
+            return update(
+                posts,
+                {
+                    isLoading: { $set: false },
+                    ids: { $set: action.payload.map(post => post.id) },
+                    data: { $merge: action.payload.reduce((dict, post) => {dict[post.id] = post; return dict; }, {}) }
+                }
+            );
         case POSTS_FAILURE:
-            return {
-                ids: posts.ids,
-                posts: posts.data,
-                isLoading: false,
-                errors: action.errors
-            };
+            return update(
+                posts,
+                {
+                    isLoading: { $set: false },
+                    errors: { $set: action.payload },
+                }
+
+            );
         default:
             return posts;
     }
