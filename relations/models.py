@@ -6,7 +6,7 @@ from core.models import Authored, Dated
 
 class FriendshipRequest(Authored, Dated):
     target = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Цель')
-    accepted = models.BooleanField(verbose_name='Принят?', default=False)
+    accepted = models.NullBooleanField(verbose_name='Принят?', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Запрос в друзья'

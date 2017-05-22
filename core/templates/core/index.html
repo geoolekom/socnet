@@ -11,12 +11,13 @@
         }
 
         #root {
-            padding: 5px;
+            padding: 8px;
         }
     </style>
 </head>
 
 <body>
+{% csrf_token %}
 <div id="root"></div>
 <script src="{% static 'build/app.js' %}?v={{ STATIC_VERSION }}"></script>
 </body>

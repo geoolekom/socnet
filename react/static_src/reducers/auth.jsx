@@ -4,6 +4,11 @@ const defaultState = {
     credentials: {},
     loggedIn: false,
     errors: [],
+    cookies: document.cookie.split('; ').reduce((dict, c) => {
+        let pair = c.split('=');
+        dict[pair[0]] = pair[1];
+        return dict;
+    }, {})
 };
 
 export default (auth = defaultState, action) => {
