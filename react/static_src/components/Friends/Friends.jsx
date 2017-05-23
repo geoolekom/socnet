@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 import Friend from "./Friend";
 import Request from "./Request";
 
-import { Loader, Divider } from 'semantic-ui-react';
+import { Loader, Divider, Segment } from 'semantic-ui-react';
 import { Card } from "semantic-ui-react";
 
-
+import { CALL_API } from 'redux-api-middleware';
 class Friends extends React.Component {
     render = () => {
         const friends = this.props.friends;
@@ -42,13 +42,19 @@ class Friends extends React.Component {
 
         return <div>
             <Divider horizontal>Friendship Requests</Divider>
-            <Card.Group itemsPerRow={ 4 }>
-                { requests_array }
-            </Card.Group>
+            {
+                requests.isLoading ? <Segment padded='very' loading/> :
+                <Card.Group itemsPerRow={ 4 }>
+                    { requests_array }
+                </Card.Group>
+            }
             <Divider horizontal>Friends</Divider>
-            <Card.Group itemsPerRow={ 4 }>
-                { friends_array }
-            </Card.Group>
+            {
+                friends.isLoading ? <Segment padded='very' loading/> :
+                <Card.Group itemsPerRow={ 4 }>
+                    { friends_array }
+                </Card.Group>
+            }
         </div>;
     };
 

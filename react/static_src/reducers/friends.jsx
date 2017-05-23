@@ -1,4 +1,5 @@
 import { FRIENDS_GET, FRIENDS_SUCCESS, FRIENDS_FAILURE } from '../actions/friends';
+import { ACCEPT_REQUEST_SUCCESS } from '../actions/requests';
 import update from 'react-addons-update';
 
 const defaultState = {
@@ -31,7 +32,6 @@ export default (friends = defaultState, action) => {
                     isLoading: { $set: false },
                     errors: { $set: action.payload },
                 }
-
             );
         default:
             return friends;

@@ -3,6 +3,7 @@ import { Card, Image, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+
 class Request extends React.Component {
     render = () => <Card>
         <Card.Content>
@@ -16,7 +17,7 @@ class Request extends React.Component {
         <Card.Content extra>
             <div className='ui two buttons'>
                 <Button basic color='green' onClick={ () => { this.props.acceptRequest(this.props.id, this.props.cookies['csrftoken']) } }>Accept</Button>
-                <Button basic color='red'>Refuse</Button>
+                <Button basic color='red' onClick={ () => { this.props.refuseRequest(this.props.id, this.props.cookies['csrftoken']) } }>Refuse</Button>
             </div>
         </Card.Content>
     </Card>
@@ -31,10 +32,10 @@ const mapStateToProps = state => ({
     cookies: state.auth.cookies
 });
 
-import { acceptRequest } from '../../actions/requests';
+import { acceptRequest, refuseRequest } from '../../actions/requests';
 
 const mapDispatchToProps = dispatch => (
-    bindActionCreators({ acceptRequest }, dispatch)
+    bindActionCreators({ acceptRequest, refuseRequest }, dispatch)
 );
 
 export default connect(
