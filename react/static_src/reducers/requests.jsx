@@ -49,7 +49,7 @@ export default (requests = defaultState, action) => {
                 requests,
                 {
                     isLoading: { $set: false },
-                    ids: { $splice: [[requests.ids.indexOf(action.payload.id), 1]] },
+                    data: { $merge: { [action.payload.id]: action.payload } },
                 }
             );
         default:

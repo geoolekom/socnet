@@ -18,7 +18,7 @@ from kombu import Queue
 # BASE SETTINGS
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_NAME = os.path.basename(os.path.dirname(BASE_DIR))
-VERSION = '1.0.5'
+VERSION = '1.0.7'
 
 SITE_URL = 'http://socnet.local'
 ADMINS = (
@@ -48,7 +48,7 @@ if DEBUG:
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -62,6 +62,7 @@ AUTH_USER_MODEL = 'accounts.User'
 PROJECT_APPS = [
     'social_django',
     'rest_framework',
+    'rest_framework.authtoken',
     'djcelery',
     'core.apps.CoreConfig',
     'accounts.apps.AccountsConfig',

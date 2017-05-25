@@ -7,7 +7,7 @@ import Request from "./Request";
 import { Loader, Divider, Segment } from 'semantic-ui-react';
 import { Card } from "semantic-ui-react";
 
-import { CALL_API } from 'redux-api-middleware';
+
 class Friends extends React.Component {
     render = () => {
         const friends = this.props.friends;
@@ -39,16 +39,15 @@ class Friends extends React.Component {
                 }
             }
         }
-
         return <div>
-            <Divider horizontal>Friendship Requests</Divider>
+            { requests_array.length > 0 ? <Divider horizontal>Friendship Requests</Divider> : null }
             {
                 requests.isLoading ? <Segment padded='very' loading/> :
                 <Card.Group itemsPerRow={ 4 }>
                     { requests_array }
                 </Card.Group>
             }
-            <Divider horizontal>Friends</Divider>
+            { requests_array.length > 0 ? <Divider horizontal>Friends</Divider> : null }
             {
                 friends.isLoading ? <Segment padded='very' loading/> :
                 <Card.Group itemsPerRow={ 4 }>

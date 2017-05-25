@@ -11,4 +11,5 @@ export default store => next => action => {
         default:
             break;
     }
+    return result;
 }

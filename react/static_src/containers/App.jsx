@@ -6,6 +6,7 @@ import { Link, Route } from 'react-router-dom';
 
 import Feed from '../components/Feed/Feed';
 import Friends from '../components/Friends/Friends';
+import AuthForm from '../components/MyPage/AuthForm';
 
 
 class App extends React.Component {
@@ -28,13 +29,17 @@ class App extends React.Component {
                 <Link to="/messages">Messages</Link>
             </Menu.Item>
 
+            <Menu.Item name="people" active={ this.props.location.pathname === '/people' }>
+                <Link to="/people">People</Link>
+            </Menu.Item>
+
             <Menu.Menu position="right">
                 <Menu.Item name="logout" />
             </Menu.Menu>
         </Menu>
 
         <div>
-            <Route exact path="/" render={ () => <div>Main</div> }/>
+            <Route exact path="/" component={ AuthForm }/>
             <Route path="/profile" render={ () => <div>profile</div> } />
             <Route path="/feed" component={ Feed } />
             <Route path="/friends" component={ Friends } />

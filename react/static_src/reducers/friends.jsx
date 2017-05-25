@@ -1,5 +1,4 @@
 import { FRIENDS_GET, FRIENDS_SUCCESS, FRIENDS_FAILURE } from '../actions/friends';
-import { ACCEPT_REQUEST_SUCCESS } from '../actions/requests';
 import update from 'react-addons-update';
 
 const defaultState = {

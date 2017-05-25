@@ -1,8 +1,9 @@
 import { LOGIN_SUCCESS, LOGIN_TRY, LOGIN_FAILURE } from '../actions/auth';
+import update from 'react-addons-update';
 
 const defaultState = {
-    credentials: {},
-    loggedIn: false,
+    token: null,
+    isLoading: false,
     errors: [],
     cookies: document.cookie.split('; ').reduce((dict, c) => {
         let pair = c.split('=');
@@ -14,23 +15,23 @@ const defaultState = {
 export default (auth = defaultState, action) => {
     switch (action.type) {
         case LOGIN_TRY:
-            return {
-                credentials: action.credentials,
-                loggedIn: auth.loggedIn,
-                errors: auth.errors,
-            };
+            return update(
+                auth,
+                { isLoading: { $set: true } }
+            );
         case LOGIN_SUCCESS:
-            return {
-                credentials: auth.credentials,
-                loggedIn: true,
-                errors: auth.errors,
-            };
+            return update(
+                auth,
+                {
+                    token: { $set: action.payload.token },
+                    isLoading: { $set: false }
+                }
+            );
         case LOGIN_FAILURE:
-            return {
-                credentials: {},
-                loggedIn: false,
-                errors: action.errors,
-            };
+            return update(
+                auth,
+                { isLoading: { $set: false } }
+            );
         default:
             return auth
     }
