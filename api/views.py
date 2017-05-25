@@ -14,6 +14,17 @@ from likes.models import Like
 from relations.models import Friendship, FriendshipRequest
 
 
+class GetParametersViewSet(viewsets.ModelViewSet):
+
+    def get_queryset(self):
+        kwargs = {}
+        fields = self.get_serializer().get_fields()
+        for name, _ in fields.items():
+            if name in self.request.GET:
+                kwargs[name] = self.request.GET[name]
+        return super(GetParametersViewSet, self).get_queryset().filter(**kwargs)
+
+
 class ProfileAPIView(generics.ListAPIView):
 
     serializer_class = api.serializers.ProfileSerializer
@@ -23,7 +34,7 @@ class ProfileAPIView(generics.ListAPIView):
         return [self.request.user]
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(GetParametersViewSet):
     queryset = User.objects.all()
     permission_classes = IsAdminOrCanRegister,
 
@@ -39,14 +50,14 @@ class UserViewSet(viewsets.ModelViewSet):
         user.save()
 
 
-class ChatViewSet(viewsets.ModelViewSet):
+class ChatViewSet(GetParametersViewSet):
     queryset = Chat.objects.all()
     serializer_class = api.serializers.ChatSerializer
     permission_classes = IsChatParticipantOrAuthor,
 
     def get_queryset(self):
         uid = self.request.user.id
-        return Chat.objects.filter(participants__id=uid).prefetch_related('author')
+        return Chat.objects.filter(participants__id=uid)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^api/v1/profile/', ProfileAPIView.as_view()),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^social/', include('social_django.urls', namespace='social')),
+    url(r'^search/', include('search.urls', namespace='search')),
     url(r'^', include('core.urls', namespace='core')),
 ]
 

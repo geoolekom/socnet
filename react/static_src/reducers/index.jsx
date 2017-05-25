@@ -7,6 +7,7 @@ import displayReducer from '../reducers/display';
 import authReducer from '../reducers/auth';
 import friendReducer from '../reducers/friends';
 import requestReducer from '../reducers/requests';
+import searchReducer from '../reducers/search';
 
 const rootReducer = combineReducers({
     posts: postReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     friends: friendReducer,
     requests: requestReducer,
     router: routerReducer,
+    search: searchReducer,
 });
 
 export default rootReducer;

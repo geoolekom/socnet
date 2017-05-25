@@ -39,10 +39,6 @@ export default (requests = defaultState, action) => {
                     data: { $merge: action.payload.reduce((dict, request) => {dict[request.id] = request; return dict; }, {}) }
                 }
             );
-            return update(
-                requests,
-                { isLoading: { $set: true } }
-            );
         case ACCEPT_REQUEST_SUCCESS:
         case REFUSE_REQUEST_SUCCESS:
             return update(

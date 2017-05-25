@@ -53,7 +53,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    'DATETIME_FORMAT': '%d.%m.%Y, %H:%M:%S'
+    'DATETIME_FORMAT': '%d.%m.%Y, %H:%M:%S',
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 5
 }
 
 # Application definition
@@ -64,6 +66,7 @@ PROJECT_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djcelery',
+    'haystack',
     'core.apps.CoreConfig',
     'accounts.apps.AccountsConfig',
     'posts.apps.PostsConfig',
@@ -72,7 +75,7 @@ PROJECT_APPS = [
     'chats.apps.ChatsConfig',
     'relations.apps.RelationsConfig',
     'mailing.apps.MailingConfig',
-    'react'
+    'react',
 ]
 
 INSTALLED_APPS = [
@@ -201,3 +204,13 @@ STATIC_ROOT = '/home/geoolekom/code/socnet/collected_static/'
 
 # DATE AND TIME
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
+
+# HAYSTACK
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, '../whoosh_index'),
+    }
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Menu, Modal, Header } from 'semantic-ui-react';
+import { Menu, Modal, Icon } from 'semantic-ui-react';
 import { Link, Route } from 'react-router-dom';
 
 import Feed from '../components/Feed/Feed';
 import Friends from '../components/Friends/Friends';
 import AuthForm from '../components/MyPage/AuthForm';
 import MyPage from '../components/MyPage/MyPage';
+import Search from '../components/Search/SearchResults';
 
 
 class App extends React.Component {
@@ -30,12 +31,16 @@ class App extends React.Component {
                 <Link to="/friends">Friends</Link>
             </Menu.Item>
 
-            <Menu.Item name="messages" active={ this.props.location.pathname === '/messages' }>
-                <Link to="/messages">Messages</Link>
-            </Menu.Item>
-
             <Menu.Item name="people" active={ this.props.location.pathname === '/people' }>
                 <Link to="/people">People</Link>
+            </Menu.Item>
+
+            <Menu.Item name="messages" active={ this.props.location.pathname === '/messages' }>
+                <Link to="/messages"><Icon name="mail"/> Messages</Link>
+            </Menu.Item>
+
+            <Menu.Item name="search" active={ this.props.location.pathname === '/search' }>
+                <Link to="/search"><Icon name="search"/> Search</Link>
             </Menu.Item>
 
             { !this.props.user ?
@@ -56,12 +61,13 @@ class App extends React.Component {
             }
         </Menu>
 
-        <div>
+        <div style={ { padding: "8px" } }>
             <Route exact path="/" component={ AuthForm }/>
             <Route path="/profile" component={ MyPage } />
             <Route path="/feed" component={ Feed } />
             <Route path="/friends" component={ Friends } />
             <Route path="/messages" render={ () => <div>messages</div> } />
+            <Route path="/search" component={ Search }/>
         </div>
     </div>
 }
