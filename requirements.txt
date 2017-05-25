@@ -8,3 +8,5 @@ django-debug-toolbar==1.6
 kombu==3.0.37
 redis==2.10.5
 celery==3.1.25
+whoosh==2.7.4
+django-haystack==2.6.1

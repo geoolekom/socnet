@@ -14,16 +14,27 @@ class AuthForm extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         this.props.login(this.state.username, this.state.password);
+        this.props.done();
     };
 
-    render = () => <div>
-        <Form onSubmit={ this.handleSubmit } loading={ this.props.isLoading }>
-            <Form.Input name="username" placeholder="Username" onChange={ this.handleChange } />
-            <Form.Input name="password" placeholder="Password" type="password" onChange={ this.handleChange } />
-            <Form.Button type="submit">Login</Form.Button>
-        </Form>
-    </div>;
+    handleCancel = event => {
+        event.preventDefault();
+        this.props.done();
+    };
+
+    render = () => <Form onSubmit={ this.handleSubmit } loading={ this.props.isLoading }>
+        <Form.Input name="username" placeholder="Username" onChange={ this.handleChange } />
+        <Form.Input name="password" placeholder="Password" type="password" onChange={ this.handleChange } />
+        <Button.Group basic>
+            <Form.Button color="black" type="submit">Login</Form.Button>
+            <Form.Button color="black" onClick={ this.handleCancel }>Cancel</Form.Button>
+        </Button.Group>
+    </Form>;
 }
+
+AuthForm.propTypes = {
+    done: React.PropTypes.func
+};
 
 const mapStateToProps = state => ({
     token: state.auth.token,

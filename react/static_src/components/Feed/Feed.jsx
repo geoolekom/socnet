@@ -15,15 +15,19 @@ class Feed extends React.Component {
         const posts = this.props.posts;
         for (let id of posts.ids) {
             const author = this.props.users.data[posts.data[id].author];
-            array.push(
-                <Post key={ id }
-                      created={ posts.data[id].created }
-                      title={ posts.data[id].title }
-                      content={ posts.data[id].content }
-                      author={ author }
-                      likeCount={ posts.data[id].like_count }
-                />
-            )
+            if (!author) {
+                array.push(<Loader active>Loading</Loader>)
+            } else {
+                array.push(
+                    <Post key={ id }
+                          created={ posts.data[id].created }
+                          title={ posts.data[id].title }
+                          content={ posts.data[id].content }
+                          author={ author }
+                          likeCount={ posts.data[id].like_count }
+                    />
+                )
+            }
         }
         return <div>
             { array }

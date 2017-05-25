@@ -1,15 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Modal, Header } from 'semantic-ui-react';
 import { Link, Route } from 'react-router-dom';
 
 import Feed from '../components/Feed/Feed';
 import Friends from '../components/Friends/Friends';
 import AuthForm from '../components/MyPage/AuthForm';
+import MyPage from '../components/MyPage/MyPage';
 
 
 class App extends React.Component {
+
+    state = {
+        needLogin: !this.props.user
+    };
 
     render = () => <div>
         <Menu pointing secondary>
@@ -33,14 +38,27 @@ class App extends React.Component {
                 <Link to="/people">People</Link>
             </Menu.Item>
 
-            <Menu.Menu position="right">
-                <Menu.Item name="logout" />
-            </Menu.Menu>
+            { !this.props.user ?
+                <Menu.Menu position="right">
+                    <Modal size="small" open={ this.state.needLogin } trigger={ <Menu.Item>Login</Menu.Item> } onOpen={ () => { this.setState({ needLogin: true }) } }>
+                        <Modal.Header>Welcome!</Modal.Header>
+                        <Modal.Content>
+                            <Modal.Description>
+                                <AuthForm done={ () => { this.setState({ needLogin: false }) } } />
+                            </Modal.Description>
+                        </Modal.Content>
+                    </Modal>
+                </Menu.Menu> :
+                <Menu.Menu position="right">
+                    <Menu.Item content={ `Hello, ${this.props.user.username}!` }/>
+                    <Menu.Item name="logout" onClick={ this.props.logout } />
+                </Menu.Menu>
+            }
         </Menu>
 
         <div>
             <Route exact path="/" component={ AuthForm }/>
-            <Route path="/profile" render={ () => <div>profile</div> } />
+            <Route path="/profile" component={ MyPage } />
             <Route path="/feed" component={ Feed } />
             <Route path="/friends" component={ Friends } />
             <Route path="/messages" render={ () => <div>messages</div> } />
@@ -51,11 +69,14 @@ class App extends React.Component {
 App.propTypes = {};
 
 const mapStateToProps = state => ({
+    user: state.auth.user,
     location: state.router.location,
 });
 
+import { logout } from '../actions/auth';
+
 const mapDispatchToProps = dispatch => (
-    bindActionCreators({}, dispatch)
+    bindActionCreators({ logout }, dispatch)
 );
 
 export default connect(

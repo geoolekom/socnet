@@ -19,11 +19,13 @@ from django.conf import settings
 
 from api.routers import router
 from rest_framework.authtoken import views
+from api.views import ProfileAPIView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/', include(router.urls, namespace='api')),
-    url(r'^api/v1/auth', views.obtain_auth_token),
+    url(r'^api/v1/auth/', views.obtain_auth_token),
+    url(r'^api/v1/profile/', ProfileAPIView.as_view()),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^social/', include('social_django.urls', namespace='social')),
     url(r'^', include('core.urls', namespace='core')),

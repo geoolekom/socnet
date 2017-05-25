@@ -1,5 +1,5 @@
 from django.db.models import Q
-from rest_framework import viewsets, views
+from rest_framework import viewsets, generics, views
 
 from rest_framework.permissions import IsAuthenticated
 from api.permissions import IsChatParticipantOrAuthor, IsAuthor, IsAuthorOrReadOnly, IsAdminOrReadOnly, IsConsumer, \
@@ -12,6 +12,15 @@ from comments.models import Comment
 from posts.models import Post
 from likes.models import Like
 from relations.models import Friendship, FriendshipRequest
+
+
+class ProfileAPIView(generics.ListAPIView):
+
+    serializer_class = api.serializers.ProfileSerializer
+    permission_classes = IsAuthenticated,
+
+    def get_queryset(self):
+        return [self.request.user]
 
 
 class UserViewSet(viewsets.ModelViewSet):

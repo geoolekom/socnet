@@ -1,5 +1,5 @@
-import requestMiddleware from './requests';
-import authMiddleware from './auth';
+import requestMultiplier from './requests';
+import authMultiplier, { authentication } from './auth';
 import { apiMiddleware } from 'redux-api-middleware';
 
-export default [apiMiddleware, authMiddleware, requestMiddleware];
+export default [authentication, apiMiddleware, requestMultiplier, authMultiplier];
