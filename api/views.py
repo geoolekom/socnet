@@ -1,4 +1,6 @@
 from django.db.models import Q
+from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError as APIValidationError
 from rest_framework import viewsets, generics, views
 
 from rest_framework.permissions import IsAuthenticated
@@ -16,17 +18,26 @@ from relations.models import Friendship, FriendshipRequest
 
 class GetParametersViewSet(viewsets.ModelViewSet):
 
-    def get_queryset(self):
+    def filter_queryset(self, queryset):
         kwargs = {}
-        fields = self.get_serializer().get_fields()
-        for name, _ in fields.items():
-            if name in self.request.GET:
-                value = self.request.GET.getlist(name)
+        serializer_fields = self.get_serializer().fields.keys()
+        for field in queryset.model._meta.fields:
+            if field.name in self.request.GET and field.name in serializer_fields:
+                value = self.request.GET.getlist(field.name)
+                errors = []
+                for element in value:
+                    try:
+                        field.to_python(element)
+                    except ValidationError as e:
+                        errors.extend(e.messages)
+                if errors:
+                    raise APIValidationError(errors)
+
                 if len(value) == 1:
-                    kwargs[name] = value[0]  # TODO: validate values
+                    kwargs[field.name] = value[0]
                 elif len(value) > 1:
-                    kwargs['{0}__in'.format(name)] = value
-        return super(GetParametersViewSet, self).get_queryset().filter(**kwargs)
+                    kwargs['{0}__in'.format(field.name)] = value
+        return queryset.filter(**kwargs)
 
 
 class ProfileAPIView(generics.ListAPIView):
@@ -70,7 +81,7 @@ class ChatViewSet(viewsets.ModelViewSet):
 class MessageViewSet(GetParametersViewSet):
     queryset = Message.objects.all()
     serializer_class = api.serializers.MessageSerializer
-    permission_classes = (IsAuthor, IsAuthenticated,)
+    permission_classes = (IsAuthor, IsAuthenticated, )
 
     def get_queryset(self):
         return super(MessageViewSet, self).get_queryset().filter(
