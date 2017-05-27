@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Loader } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 
 import Post from './Post';
 
@@ -16,7 +16,7 @@ class Feed extends React.Component {
         for (let id of posts.ids) {
             const author = this.props.users.data[posts.data[id].author];
             if (!author) {
-                array.push(<Loader active>Loading</Loader>)
+                array.push(<Segment key={id} padded='very' loading/>)
             } else {
                 array.push(
                     <Post key={ id }

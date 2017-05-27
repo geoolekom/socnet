@@ -14,7 +14,7 @@ class AuthForm extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         this.props.login(this.state.username, this.state.password);
-        this.props.done();
+        this.props.done ? this.props.done(): null;
     };
 
     handleCancel = event => {

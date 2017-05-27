@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Menu, Modal, Icon } from 'semantic-ui-react';
+import { Menu, Modal, Icon, Loader } from 'semantic-ui-react';
 import { Link, Route } from 'react-router-dom';
 
 import Feed from '../components/Feed/Feed';
@@ -14,7 +14,7 @@ import Search from '../components/Search/SearchResults';
 class App extends React.Component {
 
     state = {
-        needLogin: !this.props.user
+        needLogin: this.props.token === null
     };
 
     render = () => <div>
@@ -43,7 +43,11 @@ class App extends React.Component {
                 <Link to="/search"><Icon name="search"/> Search</Link>
             </Menu.Item>
 
-            { !this.props.user ?
+            { this.props.token ?
+                <Menu.Menu position="right">
+                    <Menu.Item content={ this.props.user ? `Hello, ${this.props.user.username}!` : <Loader size='tiny' active inline /> }/>
+                    <Menu.Item name="logout" onClick={ this.props.logout } />
+                </Menu.Menu> :
                 <Menu.Menu position="right">
                     <Modal size="small" open={ this.state.needLogin } trigger={ <Menu.Item>Login</Menu.Item> } onOpen={ () => { this.setState({ needLogin: true }) } }>
                         <Modal.Header>Welcome!</Modal.Header>
@@ -53,10 +57,6 @@ class App extends React.Component {
                             </Modal.Description>
                         </Modal.Content>
                     </Modal>
-                </Menu.Menu> :
-                <Menu.Menu position="right">
-                    <Menu.Item content={ `Hello, ${this.props.user.username}!` }/>
-                    <Menu.Item name="logout" onClick={ this.props.logout } />
                 </Menu.Menu>
             }
         </Menu>
@@ -69,20 +69,25 @@ class App extends React.Component {
             <Route path="/messages" render={ () => <div>messages</div> } />
             <Route path="/search" component={ Search }/>
         </div>
-    </div>
+    </div>;
+
+    componentDidMount = () => {
+        this.props.getProfile();
+    };
 }
 
 App.propTypes = {};
 
 const mapStateToProps = state => ({
+    token: state.auth.token,
     user: state.auth.user,
     location: state.router.location,
 });
 
-import { logout } from '../actions/auth';
+import { logout, getProfile } from '../actions/auth';
 
 const mapDispatchToProps = dispatch => (
-    bindActionCreators({ logout }, dispatch)
+    bindActionCreators({ logout, getProfile }, dispatch)
 );
 
 export default connect(

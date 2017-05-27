@@ -1,7 +1,8 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Divider, Checkbox, Segment, Input} from 'semantic-ui-react';
+import {Divider, Checkbox, Segment, Input, Loader} from 'semantic-ui-react';
+import Post from "../Feed/Post";
 
 
 class SearchResults extends React.Component {
@@ -22,15 +23,37 @@ class SearchResults extends React.Component {
                 activeBoxes.push(name);
             }
         }
-        console.log(this.state);
         this.props.getSearchResults(data.value, activeBoxes);
     };
 
     handleCheckbox = (e, data) => {
-        this.setState({ checkboxes: {[data.name]: data.checked} });
+        const state = this.state;
+        state.checkboxes[data.name] = data.checked;
+        this.setState(state);
     };
 
     render = () => {
+
+        let postArray = [];
+        if (this.props.results.hasOwnProperty('post')) {
+            const posts = this.props.posts;
+            for (let id of this.props.results.post) {
+                const author = this.props.users.data[posts.data[id].author];
+                if (!author) {
+                    postArray.push(<Segment key={id} padded='very' loading/>)
+                } else {
+                    postArray.push(
+                        <Post key={ id }
+                              created={ posts.data[id].created }
+                              title={ posts.data[id].title }
+                              content={ posts.data[id].content }
+                              author={ author }
+                              likeCount={ posts.data[id].like_count }
+                        />
+                    )
+                }
+            }
+        }
 
         return <div>
             <Input loading={ this.props.isLoading } icon='search' placeholder='Search...' onChange={ this.handleSearch } />
@@ -42,13 +65,23 @@ class SearchResults extends React.Component {
                 <Segment textAlign='center'><Checkbox onChange={ this.handleCheckbox } label={ <label>MESSAGES</label> } slider defaultChecked name="chats.message" /></Segment>
             </Segment.Group>
             <Divider horizontal>Results</Divider>
+            { postArray }
         </div>;
+    };
+
+    componentDidMount = () => {
+        if (this.props.results.hasOwnProperty('post')) {
+            this.getPosts();
+        }
     };
 }
 
 const mapStateToProps = state => ({
     results: state.search.results,
     isLoading: state.search.isLoading,
+    posts: state.posts,
+    users: state.users,
+    friends: state.friends,
 });
 
 import { getSearchResults } from '../../actions/search';

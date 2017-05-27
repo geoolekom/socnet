@@ -21,7 +21,10 @@ export default (search = defaultState, action) => {
         case SEARCH_TRY:
             return update(
                 search,
-                { isLoading: { $set: true } }
+                {
+                    isLoading: { $set: true },
+                    results: { $set: {} }
+                }
             );
         case SEARCH_SUCCESS:
             return update(

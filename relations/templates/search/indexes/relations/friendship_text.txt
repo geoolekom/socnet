@@ -1,0 +1,4 @@
+{{ object.person.username }} {{ object.friend.username }}
+{{ object.person.description }} {{ object.person.first_name }} {{ object.person.last_name }}
+{{ object.friend.description }} {{ object.friend.first_name }} {{ object.friend.last_name }}
+

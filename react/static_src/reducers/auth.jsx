@@ -3,7 +3,7 @@ import { PROFILE_GET, PROFILE_SUCCESS, PROFILE_FAILURE } from "../actions/auth";
 import update from 'react-addons-update';
 
 const defaultState = {
-    token: null,
+    token: localStorage.getItem('token'),
     user: null,
     isLoading: false,
     errors: [],
@@ -23,6 +23,7 @@ export default (auth = defaultState, action) => {
                 { isLoading: { $set: true } }
             );
         case LOGIN_SUCCESS:
+            localStorage.setItem('token', action.payload.token);
             return update(
                 auth,
                 {
@@ -45,6 +46,7 @@ export default (auth = defaultState, action) => {
                 { isLoading: { $set: false } }
             );
         case LOGOUT:
+            localStorage.removeItem('token');
             return update(
                 auth,
                 {
