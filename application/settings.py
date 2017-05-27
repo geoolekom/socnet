@@ -18,7 +18,7 @@ from kombu import Queue
 # BASE SETTINGS
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_NAME = os.path.basename(os.path.dirname(BASE_DIR))
-VERSION = '1.0.10'
+VERSION = '1.1.0'
 
 SITE_URL = 'http://socnet.local'
 ADMINS = (
@@ -54,6 +54,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DATETIME_FORMAT': '%d.%m.%Y, %H:%M:%S',
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE': 5
 }
@@ -64,6 +65,7 @@ AUTH_USER_MODEL = 'accounts.User'
 PROJECT_APPS = [
     'social_django',
     'rest_framework',
+    'django_filters',
     'rest_framework.authtoken',
     'djcelery',
     'haystack',

@@ -23,7 +23,7 @@ class SearchResults extends React.Component {
                 activeBoxes.push(name);
             }
         }
-        this.props.getSearchResults(data.value, activeBoxes);
+        this.props.getSearchResults({q: data.value, models: activeBoxes});
     };
 
     handleCheckbox = (e, data) => {
@@ -37,11 +37,10 @@ class SearchResults extends React.Component {
         let postArray = [];
         if (this.props.results.hasOwnProperty('post')) {
             const posts = this.props.posts;
+            const users = this.props.users;
             for (let id of this.props.results.post) {
-                const author = this.props.users.data[posts.data[id].author];
-                if (!author) {
-                    postArray.push(<Segment key={id} padded='very' loading/>)
-                } else {
+                if (posts.data.hasOwnProperty(id) && users.data.hasOwnProperty(posts.data[id].author)) {
+                    const author = users.data[posts.data[id].author];
                     postArray.push(
                         <Post key={ id }
                               created={ posts.data[id].created }
@@ -51,6 +50,8 @@ class SearchResults extends React.Component {
                               likeCount={ posts.data[id].like_count }
                         />
                     )
+                } else {
+                    postArray.push(<Segment key={id} padded='very' loading/>)
                 }
             }
         }
@@ -68,12 +69,6 @@ class SearchResults extends React.Component {
             { postArray }
         </div>;
     };
-
-    componentDidMount = () => {
-        if (this.props.results.hasOwnProperty('post')) {
-            this.getPosts();
-        }
-    };
 }
 
 const mapStateToProps = state => ({
@@ -85,9 +80,10 @@ const mapStateToProps = state => ({
 });
 
 import { getSearchResults } from '../../actions/search';
+import { getPosts } from '../../actions/posts';
 
 const mapDispatchToProps = dispatch => (
-    bindActionCreators({ getSearchResults }, dispatch)
+    bindActionCreators({ getSearchResults, getPosts }, dispatch)
 );
 
 export default connect(

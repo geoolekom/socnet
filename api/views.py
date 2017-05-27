@@ -21,7 +21,11 @@ class GetParametersViewSet(viewsets.ModelViewSet):
         fields = self.get_serializer().get_fields()
         for name, _ in fields.items():
             if name in self.request.GET:
-                kwargs[name] = self.request.GET[name]
+                value = self.request.GET.getlist(name)
+                if len(value) == 1:
+                    kwargs[name] = value[0]  # TODO: validate values
+                elif len(value) > 1:
+                    kwargs['{0}__in'.format(name)] = value
         return super(GetParametersViewSet, self).get_queryset().filter(**kwargs)
 
 
@@ -50,7 +54,7 @@ class UserViewSet(GetParametersViewSet):
         user.save()
 
 
-class ChatViewSet(GetParametersViewSet):
+class ChatViewSet(viewsets.ModelViewSet):
     queryset = Chat.objects.all()
     serializer_class = api.serializers.ChatSerializer
     permission_classes = IsChatParticipantOrAuthor,
@@ -63,13 +67,13 @@ class ChatViewSet(GetParametersViewSet):
         serializer.save(author=self.request.user)
 
 
-class MessageViewSet(viewsets.ModelViewSet):
+class MessageViewSet(GetParametersViewSet):
     queryset = Message.objects.all()
     serializer_class = api.serializers.MessageSerializer
     permission_classes = (IsAuthor, IsAuthenticated,)
 
     def get_queryset(self):
-        return Message.objects.filter(
+        return super(MessageViewSet, self).get_queryset().filter(
             Q(author_id=self.request.user.id) | Q(chat_id__in=self.request.user.chat_set.all())
         ).prefetch_related('author')
 
@@ -77,13 +81,13 @@ class MessageViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-class PostViewSet(viewsets.ModelViewSet):
+class PostViewSet(GetParametersViewSet):
     queryset = Post.objects.all()
     serializer_class = api.serializers.PostSerializer
     permission_classes = IsAuthorOrReadOnly,
 
     def get_queryset(self):
-        return self.queryset.prefetch_related('author')
+        return super(PostViewSet, self).get_queryset().prefetch_related('author')
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -110,12 +114,10 @@ class LikeViewSet(viewsets.ModelViewSet):
 class FriendshipViewSet(viewsets.ModelViewSet):
     queryset = Friendship.objects.all()
     serializer_class = api.serializers.FriendshipSerializer
-    permission_classes = IsPersonOrReadOnly,
+    permission_classes = IsPersonOrReadOnly, IsAuthenticated
 
     def get_queryset(self):
-        if self.request.user.is_authenticated():
-            return self.queryset.filter(person=self.request.user)
-        return self.queryset.none()
+        return super(FriendshipViewSet, self).get_queryset().filter(person=self.request.user)
 
 
 class FriendshipRequestViewSet(viewsets.ModelViewSet):

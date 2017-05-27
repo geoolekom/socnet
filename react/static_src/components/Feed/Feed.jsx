@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Loader } from 'semantic-ui-react';
 
 import Post from './Post';
 
@@ -36,7 +36,6 @@ class Feed extends React.Component {
 
     componentDidMount = () => {
         this.props.getPosts();
-        this.props.getUsers();
     };
 }
 
