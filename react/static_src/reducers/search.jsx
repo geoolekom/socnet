@@ -33,7 +33,7 @@ export default (search = defaultState, action) => {
                 search,
                 {
                     isLoading: { $set: false },
-                    results: { $merge: action.payload }
+                    results: { $merge: action.payload || {} }
                 }
             );
         default:

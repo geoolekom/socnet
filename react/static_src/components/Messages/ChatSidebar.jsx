@@ -35,12 +35,14 @@ const mapStateToProps = state => ({
     visibility: state.display.sidebarVisibility,
     top: state.display.scroll.top,
     windowSize: state.display.size,
+    chats: state.chats
 });
 
 import { toggleChatSidebarVisibility } from '../../actions/display';
+import { getChats } from '../../actions/chats';
 
 const mapDispatchToProps = dispatch => (
-    bindActionCreators({ toggleChatSidebarVisibility }, dispatch)
+    bindActionCreators({ toggleChatSidebarVisibility, getChats }, dispatch)
 );
 
 export default connect(

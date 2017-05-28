@@ -22,7 +22,7 @@ export default (chats = defaultState, action) => {
                 {
                     isLoading: { $set: false },
                     ids: { $set: action.payload.result },
-                    data: { $merge: action.payload.entities.chats }
+                    data: { $merge: action.payload.entities.chats || {} }
                 }
             );
         case CHATS_FAILURE:

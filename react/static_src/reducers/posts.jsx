@@ -21,7 +21,7 @@ export default (posts = defaultState, action) => {
                 {
                     isLoading: { $set: false },
                     ids: { $set: action.payload.result },
-                    data: { $merge: action.payload.entities.posts }
+                    data: { $merge: action.payload.entities.posts || {} }
                 }
             );
         case POSTS_FAILURE:

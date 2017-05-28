@@ -7,7 +7,7 @@ import { objectToQuery } from '../helpers/web';
 
 export const getChats = (params) => ({
     [CALL_API]: {
-        endpoint: `/api/v1/chats/?${objectToQuery(params)}`,
+        endpoint: `/api/v1/chats/${objectToQuery(params)}`,
         method: 'GET',
         types: [CHATS_GET, CHATS_SUCCESS, CHATS_FAILURE],
         credentials: 'same-origin',

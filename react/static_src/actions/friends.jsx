@@ -7,7 +7,7 @@ import { objectToQuery } from '../helpers/web';
 
 export const getFriends = (params) => ({
     [CALL_API]: {
-        endpoint: `/api/v1/friends/?${objectToQuery(params)}`,
+        endpoint: `/api/v1/friends/${objectToQuery(params)}`,
         method: 'GET',
         types: [FRIENDS_GET, FRIENDS_SUCCESS, FRIENDS_FAILURE],
         credentials: 'same-origin',

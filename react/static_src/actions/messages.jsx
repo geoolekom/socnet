@@ -7,7 +7,7 @@ import { objectToQuery } from '../helpers/web';
 
 export const getMessages = (params) => ({
     [CALL_API]: {
-        endpoint: `/api/v1/messages/?${objectToQuery(params)}`,
+        endpoint: `/api/v1/messages/${objectToQuery(params)}`,
         method: 'GET',
         types: [MESSAGES_GET, MESSAGES_SUCCESS, MESSAGES_FAILURE],
         credentials: 'same-origin',

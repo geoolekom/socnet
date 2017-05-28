@@ -21,7 +21,7 @@ export default (friends = defaultState, action) => {
                 {
                     isLoading: { $set: false },
                     ids: { $set: action.payload.result },
-                    data: { $merge: action.payload.entities.friends }
+                    data: { $merge: action.payload.entities.friends || {} }
                 }
             );
         case FRIENDS_FAILURE:

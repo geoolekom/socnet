@@ -23,7 +23,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('id', 'author', 'chat', 'pub_time', 'upd_time', 'content', 'created', )
+        fields = ('id', 'author', 'chat', 'created', 'updated', 'content', 'created', )
 
 
 class ChatSerializer(serializers.ModelSerializer):

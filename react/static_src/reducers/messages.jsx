@@ -16,12 +16,13 @@ export default (messages = defaultState, action) => {
                 { isLoading: { $set: true } }
             );
         case MESSAGES_SUCCESS:
+            console.log(action);
             return update(
                 messages,
                 {
                     isLoading: { $set: false },
                     ids: { $set: action.payload.result },
-                    data: { $merge: action.payload.entities.messages }
+                    data: { $merge: action.payload.entities.messages || {} }
                 }
             );
         case MESSAGES_FAILURE:

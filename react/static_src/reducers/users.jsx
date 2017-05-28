@@ -21,7 +21,7 @@ export default (users = defaultState, action) => {
                 {
                     isLoading: { $set: false },
                     ids: { $set: action.payload.result },
-                    data: { $merge: action.payload.entities.users }
+                    data: { $merge: action.payload.entities.users || {} }
                 }
             );
         case USERS_FAILURE:

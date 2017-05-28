@@ -1,4 +1,5 @@
 import authMultiplier, { authentication } from './auth';
+import chatMultiplier from './chats';
 import friendMultiplier from './friends';
 import postMultiplier from './posts';
 import requestMultiplier from './requests';
@@ -10,6 +11,7 @@ export default [
     authentication,
     apiMiddleware,
     authMultiplier,
+    chatMultiplier,
     friendMultiplier,
     postMultiplier,
     requestMultiplier,

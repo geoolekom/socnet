@@ -5,7 +5,7 @@ import { FRIENDS_SUCCESS } from '../actions/friends';
 import { MESSAGES_SUCCESS } from '../actions/messages';
 import { CHATS_SUCCESS } from '../actions/chats';
 import { normalize } from 'normalizr';
-import { user, post, comment, friend, request } from '../helpers/schema';
+import { user, post, comment, friend, request, message, chat } from '../helpers/schema';
 
 export default store => next => action => {
     switch (action.type) {
@@ -23,6 +23,12 @@ export default store => next => action => {
             break;
         case POSTS_SUCCESS:
             action.payload = normalize(action.payload, [ post ]);
+            break;
+        case CHATS_SUCCESS:
+            action.payload = normalize(action.payload, [ chat ]);
+            break;
+        case MESSAGES_SUCCESS:
+            action.payload = normalize(action.payload, [ message ]);
             break;
         default:
             break;
