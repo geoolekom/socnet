@@ -60,7 +60,6 @@ class Friends extends React.Component {
     componentDidMount = () => {
         this.props.getFriends();
         this.props.getRequests();
-        this.props.getUsers();
     };
 }
 

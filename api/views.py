@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError as APIValidationError
 from rest_framework import viewsets, generics, views
 
 from rest_framework.permissions import IsAuthenticated
-from api.permissions import IsChatParticipantOrAuthor, IsAuthor, IsAuthorOrReadOnly, IsAdminOrReadOnly, IsConsumer, \
+from api.permissions import IsChatParticipant, IsAuthor, IsAuthorOrReadOnly, IsAdminOrReadOnly, IsConsumer, \
     IsAdminOrCanRegister, IsPersonOrReadOnly, IsAuthorOrTargetOrReadOnly
 import api.serializers
 
@@ -68,14 +68,14 @@ class UserViewSet(GetParametersViewSet):
 class ChatViewSet(viewsets.ModelViewSet):
     queryset = Chat.objects.all()
     serializer_class = api.serializers.ChatSerializer
-    permission_classes = IsChatParticipantOrAuthor,
+    permission_classes = IsChatParticipant,
 
     def get_queryset(self):
         uid = self.request.user.id
         return Chat.objects.filter(participants__id=uid)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save()
 
 
 class MessageViewSet(GetParametersViewSet):
@@ -99,6 +99,9 @@ class PostViewSet(GetParametersViewSet):
 
     def get_queryset(self):
         return super(PostViewSet, self).get_queryset().prefetch_related('author')
+
+    def filter_queryset(self, queryset):
+        return super(PostViewSet, self).filter_queryset(queryset).filter(deleted=False)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

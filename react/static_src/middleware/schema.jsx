@@ -2,6 +2,8 @@ import { ACCEPT_REQUEST_SUCCESS, REQUESTS_SUCCESS } from '../actions/requests';
 import { USERS_SUCCESS } from '../actions/users';
 import { POSTS_SUCCESS } from '../actions/posts';
 import { FRIENDS_SUCCESS } from '../actions/friends';
+import { MESSAGES_SUCCESS } from '../actions/messages';
+import { CHATS_SUCCESS } from '../actions/chats';
 import { normalize } from 'normalizr';
 import { user, post, comment, friend, request } from '../helpers/schema';
 

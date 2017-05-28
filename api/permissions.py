@@ -11,12 +11,9 @@ class IsConsumer(permissions.BasePermission):
         return obj.consumer_id == request.user.id
 
 
-class IsChatParticipantOrAuthor(permissions.BasePermission):
+class IsChatParticipant(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS and request.user in obj.participants.all():
-            return True
-        else:
-            return obj.author_id == request.user.id
+        return request.method in permissions.SAFE_METHODS and request.user in obj.participants.all()
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):

@@ -8,6 +8,8 @@ import authReducer from '../reducers/auth';
 import friendReducer from '../reducers/friends';
 import requestReducer from '../reducers/requests';
 import searchReducer from '../reducers/search';
+import chatReducer from '../reducers/chats';
+import messageReducer from '../reducers/messages';
 
 const rootReducer = combineReducers({
     posts: postReducer,
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
     requests: requestReducer,
     router: routerReducer,
     search: searchReducer,
+    chats: chatReducer,
+    messages: messageReducer,
 });
 
 export default rootReducer;
