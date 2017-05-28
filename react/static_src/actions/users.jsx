@@ -4,7 +4,7 @@ export const USERS_SUCCESS = 'USERS_SUCCESS';
 export const USERS_FAILURE = 'USERS_FAILURE';
 
 import { CALL_API } from 'redux-api-middleware';
-import { objectToQuery } from '../utils';
+import { objectToQuery } from '../helpers/web';
 
 export const getUsers = (params) => ({
     [CALL_API]: {

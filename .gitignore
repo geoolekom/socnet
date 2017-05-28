@@ -9,3 +9,6 @@
 react/node_modules
 react/static
 core/static/react/
+
+# Webpack
+react/webpack-stats.json 

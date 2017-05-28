@@ -20,8 +20,8 @@ export default (users = defaultState, action) => {
                 users,
                 {
                     isLoading: { $set: false },
-                    ids: { $set: action.payload.map(user => user.id) },
-                    data: { $merge: action.payload.reduce((dict, user) => {dict[user.id] = user; return dict; }, {}) }
+                    ids: { $set: action.payload.result },
+                    data: { $merge: action.payload.entities.users }
                 }
             );
         case USERS_FAILURE:

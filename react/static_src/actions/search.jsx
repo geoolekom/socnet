@@ -3,7 +3,7 @@ export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
 export const SEARCH_FAILURE = 'SEARCH_FAILURE';
 
 import { CALL_API } from 'redux-api-middleware';
-import { objectToQuery } from '../utils';
+import { objectToQuery } from '../helpers/web';
 
 
 export const getSearchResults = (params) => ({

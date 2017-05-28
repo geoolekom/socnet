@@ -4,8 +4,7 @@ import { ACCEPT_REQUEST_SUCCESS, REQUESTS_SUCCESS } from '../actions/requests';
 
 
 export default store => next => action => {
-    const result = next(action);
-    switch (result.type) {
+    switch (action.type) {
         case ACCEPT_REQUEST_SUCCESS:
             store.dispatch(getFriends({id: action.payload.id}));
             break;
@@ -22,5 +21,5 @@ export default store => next => action => {
         default:
             break;
     }
-    return result;
+    return next(action);
 }

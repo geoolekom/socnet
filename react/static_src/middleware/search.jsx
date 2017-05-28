@@ -5,8 +5,7 @@ import { getUsers } from '../actions/users';
 
 
 export default store => next => action => {
-    const result = next(action);
-    switch (result.type) {
+    switch (action.type) {
         case SEARCH_SUCCESS:
             const results = action.payload;
             if (results.hasOwnProperty('post')) {
@@ -25,5 +24,5 @@ export default store => next => action => {
         default:
             break;
     }
-    return result;
+    return next(action);
 }

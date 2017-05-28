@@ -3,8 +3,7 @@ import { getUsers } from '../actions/users';
 
 
 export default store => next => action => {
-    const result = next(action);
-    switch (result.type) {
+    switch (action.type) {
         case POSTS_SUCCESS:
             const userIds = [];
             const userData = store.getState().users.data;
@@ -18,5 +17,5 @@ export default store => next => action => {
         default:
             break;
     }
-    return result;
+    return next(action);
 }

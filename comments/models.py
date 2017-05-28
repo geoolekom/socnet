@@ -14,5 +14,5 @@ class Comment(Authored, Dated, Deletable, LikeAble):
         verbose_name_plural = 'Комментарии'
 
     def __str__(self):
-        return 'Коммент {0} на посте с id = {1}: {2}'.format(self.author, self.target.id, self.content)
+        return 'Коммент {0} на посте с id = {1}: {2}'.format(self.author, self.post.id, self.content)
 

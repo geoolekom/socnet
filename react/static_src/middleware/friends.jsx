@@ -3,8 +3,7 @@ import { FRIENDS_SUCCESS } from '../actions/friends';
 
 
 export default store => next => action => {
-    const result = next(action);
-    switch (result.type) {
+    switch (action.type) {
         case FRIENDS_SUCCESS:
             const userIds = [];
             const userData = store.getState().users.data;
@@ -18,5 +17,5 @@ export default store => next => action => {
         default:
             break;
     }
-    return result;
+    return next(action);
 }

@@ -35,8 +35,8 @@ export default (requests = defaultState, action) => {
                 requests,
                 {
                     isLoading: { $set: false },
-                    ids: { $set: action.payload.map(request => request.id) },
-                    data: { $merge: action.payload.reduce((dict, request) => {dict[request.id] = request; return dict; }, {}) }
+                    ids: { $set: action.payload.result },
+                    data: { $merge: action.payload.entities.requests }
                 }
             );
         case ACCEPT_REQUEST_SUCCESS:
@@ -45,7 +45,7 @@ export default (requests = defaultState, action) => {
                 requests,
                 {
                     isLoading: { $set: false },
-                    data: { $merge: { [action.payload.id]: action.payload } },
+                    data: { $merge: action.payload.entities.requests },
                 }
             );
         default:

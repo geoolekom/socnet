@@ -20,8 +20,8 @@ export default (posts = defaultState, action) => {
                 posts,
                 {
                     isLoading: { $set: false },
-                    ids: { $set: action.payload.map(post => post.id) },
-                    data: { $merge: action.payload.reduce((dict, post) => {dict[post.id] = post; return dict; }, {}) }
+                    ids: { $set: action.payload.result },
+                    data: { $merge: action.payload.entities.posts }
                 }
             );
         case POSTS_FAILURE:

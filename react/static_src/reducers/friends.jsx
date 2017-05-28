@@ -20,8 +20,8 @@ export default (friends = defaultState, action) => {
                 friends,
                 {
                     isLoading: { $set: false },
-                    ids: { $set: action.payload.map(friend => friend.id) },
-                    data: { $merge: action.payload.reduce((dict, friend) => {dict[friend.id] = friend; return dict; }, {}) }
+                    ids: { $set: action.payload.result },
+                    data: { $merge: action.payload.entities.friends }
                 }
             );
         case FRIENDS_FAILURE:

@@ -18,7 +18,7 @@ from kombu import Queue
 # BASE SETTINGS
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_NAME = os.path.basename(os.path.dirname(BASE_DIR))
-VERSION = '1.1.0'
+VERSION = '1.1.2'
 
 SITE_URL = 'http://socnet.local'
 ADMINS = (

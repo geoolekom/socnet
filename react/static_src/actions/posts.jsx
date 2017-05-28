@@ -5,7 +5,7 @@ export const POSTS_SUCCESS = 'POSTS_SUCCESS';
 export const POSTS_FAILURE = 'POST_FAILURE';
 
 import { CALL_API } from 'redux-api-middleware';
-import { objectToQuery } from '../utils';
+import { objectToQuery } from '../helpers/web';
 
 export const getPosts = (params) => ({
     [CALL_API]: {

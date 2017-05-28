@@ -13,13 +13,12 @@ export const authentication = store => next => action => {
 };
 
 export default store => next => action => {
-    const result = next(action);
-    switch (result.type) {
+    switch (action.type) {
         case LOGIN_SUCCESS:
             store.dispatch(getProfile());
             break;
         default:
             break;
     }
-    return result;
+    return next(action)
 };
