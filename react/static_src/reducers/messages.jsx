@@ -16,7 +16,6 @@ export default (messages = defaultState, action) => {
                 { isLoading: { $set: true } }
             );
         case MESSAGES_SUCCESS:
-            console.log(action);
             return update(
                 messages,
                 {

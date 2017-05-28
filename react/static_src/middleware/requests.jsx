@@ -12,7 +12,7 @@ export default store => next => action => {
             const userIds = [];
             const userData = store.getState().users.data;
             for (let request of action.payload) {
-                if (!userData.hasOwnProperty(request.author)) {
+                if (!userData.hasOwnProperty(request.author) || !userData.hasOwnProperty(request.target)) {
                     userIds.push(request.author);
                 }
             }

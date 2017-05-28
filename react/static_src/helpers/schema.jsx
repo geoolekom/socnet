@@ -23,11 +23,12 @@ export const request = new schema.Entity('requests', {
 });
 
 // Chats
-export const chat = new schema.Entity('chats', {
-    participants: [ user ]
-});
-
 export const message = new schema.Entity('messages', {
     author: user,
+});
+
+export const chat = new schema.Entity('chats', {
+    participants: [ user ],
+    message_set: [ message ]
 });
 

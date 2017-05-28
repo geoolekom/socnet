@@ -1,6 +1,7 @@
 import authMultiplier, { authentication } from './auth';
 import chatMultiplier from './chats';
 import friendMultiplier from './friends';
+import messageMultiplier from './messages';
 import postMultiplier from './posts';
 import requestMultiplier from './requests';
 import schemaNormalizer from './schema';
@@ -13,6 +14,7 @@ export default [
     authMultiplier,
     chatMultiplier,
     friendMultiplier,
+    messageMultiplier,
     postMultiplier,
     requestMultiplier,
     searchMultiplier,

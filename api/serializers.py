@@ -29,7 +29,7 @@ class MessageSerializer(serializers.ModelSerializer):
 class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
-        fields = ('id', 'title', 'participants', )
+        fields = ('id', 'title', 'participants', 'message_set', )
 
 
 class PostSerializer(serializers.ModelSerializer):

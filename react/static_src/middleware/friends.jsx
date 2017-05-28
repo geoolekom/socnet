@@ -12,7 +12,9 @@ export default store => next => action => {
                     userIds.push(friend.friend);
                 }
             }
-            store.dispatch(getUsers({id: userIds}));
+            if (userIds.length > 0) {
+                store.dispatch(getUsers({id: userIds}));
+            }
             break;
         default:
             break;

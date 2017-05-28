@@ -7,11 +7,9 @@ export default store => next => action => {
     switch (action.type) {
         case CHATS_SUCCESS:
             const chatIds = action.payload.map(chat => chat.id);
-            console.log(chatIds);
             store.dispatch(getMessages({chat_id: chatIds}));
             break;
         case TOGGLE_SIDEBAR:
-            console.log(store.getState().display);
             if (!store.getState().display.sidebarVisibility) {
                 store.dispatch(getChats());
             }
