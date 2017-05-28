@@ -57,7 +57,7 @@ class SearchResults extends React.Component {
         }
 
         return <div>
-            <Input loading={ this.props.isLoading } icon='search' placeholder='Search...' onChange={ this.handleSearch } />
+            <Input loading={ this.props.isLoading } icon='search' placeholder="Search..." onChange={ this.handleSearch } value={ this.props.query } />
             <Divider horizontal>Filter entities you are looking for</Divider>
             <Segment.Group horizontal>
                 <Segment textAlign='center'><Checkbox onChange={ this.handleCheckbox } label={ <label>POSTS</label> } slider defaultChecked name="posts.post" /></Segment>
@@ -72,6 +72,7 @@ class SearchResults extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    query: state.search.query,
     results: state.search.results,
     isLoading: state.search.isLoading,
     posts: state.posts,

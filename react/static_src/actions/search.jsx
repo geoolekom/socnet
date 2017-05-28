@@ -10,6 +10,6 @@ export const getSearchResults = (params) => ({
     [CALL_API]: {
         endpoint: `/search/${objectToQuery(params)}`,
         method: 'GET',
-        types: [SEARCH_TRY, SEARCH_SUCCESS, SEARCH_FAILURE],
+        types: [{ type: SEARCH_TRY, payload: params.q }, SEARCH_SUCCESS, SEARCH_FAILURE],
     }
 });

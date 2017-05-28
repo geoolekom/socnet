@@ -4,7 +4,8 @@ import update from 'react-addons-update';
 const defaultState = {
     isLoading: false,
     results: {},
-    errors: []
+    errors: [],
+    query: "",
 };
 
 export default (search = defaultState, action) => {
@@ -22,6 +23,7 @@ export default (search = defaultState, action) => {
             return update(
                 search,
                 {
+                    query: { $set: action.payload },
                     isLoading: { $set: true },
                     results: { $set: {} }
                 }
